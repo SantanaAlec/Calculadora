@@ -131,6 +131,7 @@ class MainActivity : AppCompatActivity() {
         }
         clear.setOnClickListener {
             clean()
+	    shownResult = true
         }
     }
 
@@ -138,54 +139,60 @@ class MainActivity : AppCompatActivity() {
         val numbers: TextView = findViewById(R.id.tvNumbers)
         val process: TextView = findViewById(R.id.tvProcess)
 
-        if (shownResult){
-            clean()
-            shownResult = false
+        if (!numbers.text.toString().isEmpty() && numbers.text.toString().toInt() == 0) {
+            numbers.setText(number.toString())
+        } else {
+            numbers.setText(numbers.text.toString() + number.toString())
         }
-        numbers.setText(numbers.text.toString() + number.toString())
+
+        //
 
         /**if(numbers.text.toString().toInt() == 0){
-            return
+        return
         }**/
 
-
-
-        if(sign == 0){
+        if (sign == 0) {
+            if (shownResult) {
+                clean()
+                shownResult = false
+            }
             first = numbers.text.toString().toInt()
-        }else{
+        } else {
             second = numbers.text.toString().toInt()
-            process.setText(process.text.toString() + second.toString())
+            process.setText(process.text.toString())
         }
     }
 
-    fun calculate(){
+    fun calculate() {
         val numbers: TextView = findViewById(R.id.tvNumbers)
-        if(second != Integer.MIN_VALUE){
+        val process: TextView = findViewById(R.id.tvProcess)
+        if (second != Integer.MIN_VALUE) {
             when {
-                sign == 1 ->{
+                sign == 1 -> {
                     evaluation = first + second
                 }
-                sign == 2 ->{
+                sign == 2 -> {
                     evaluation = first - second
                 }
-                sign == 3 ->{
-                    if(second != 0){
+                sign == 3 -> {
+                    if (second != 0) {
                         evaluation = first / second
                     }
                 }
-                sign == 4 ->{
+                sign == 4 -> {
                     evaluation = first * second
                 }
             }
 
             shownResult = false
             first = evaluation
-            second = Integer.MIN_VALUE
             numbers.setText(evaluation.toString())
+            process.setText(process.text.toString() + second.toString())
+            second = Integer.MIN_VALUE
         }
     }
 
-    fun clean(){
+    fun clean() {
         val numbers: TextView = findViewById(R.id.tvNumbers)
         val process: TextView = findViewById(R.id.tvProcess)
 
@@ -196,6 +203,7 @@ class MainActivity : AppCompatActivity() {
         sign = 0
     }
 
+    //5+5 (= 10) * 10 (100) / signo = No work, 5+5*10(10*110) = 100(el resultado esta bien pero no la impresiòn)
     /**
      *
      * var str: String = ""
